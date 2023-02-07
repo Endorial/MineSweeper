@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HowToActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:onClick="onClickBack"
+            android:src="@drawable/ic_back"
+            app:tint="@color/white"
+            android:layout_marginLeft="10dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/digital_7"
+        android:gravity="center"
+        android:text="How to Play"
+        android:textSize="40dp"
+        android:textStyle="bold" />
+
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto"
+        android:gravity="start"
+        android:text="The rule of the game is simple, the number on a block shows the number of mines adjacent to it and you have to flag all the mines.
+\n
+\nSome terms:
+
+\nFlag: Put a flag in a zone when you have confirmed that there is a mine.
+\nQuestion Mark: Put a question mark when you suspect that there is a mine. But it is useless.
+\nSmiley face: Click it if you want to reset the game."
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+</LinearLayout>
