@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
     private MineGridRecyclerAdapter mineGridRecyclerAdapter;
     private RecyclerView grid;
-    private TextView smiley, timer, flagsLeft,txtBestTime;
+    private TextView smiley, timer, flagsLeft, txtBestTime, txtGameStatus;
     private MineSweeperGame mineSweeperGame;
     private CountDownTimer countDownTimer;
     private int secondsElapsed;
@@ -34,28 +34,34 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
         Difficulty_Level=getIntent().getStringExtra("Level");
         txtBestTime=findViewById(R.id.txtBestTime);
+        txtGameStatus=findViewById(R.id.txtGameStatus);
         if(Difficulty_Level.equals("Easy"))
         {
-            BOMB_COUNT=2;
+            BOMB_COUNT=5;
             GRID_SIZE=5;
             GRID_SPAN=5;
         }
 
         if(Difficulty_Level.equals("Medium"))
         {
-            BOMB_COUNT=8;
+            BOMB_COUNT=15;
             GRID_SIZE=8;
             GRID_SPAN=8;
         }
         if(Difficulty_Level.equals("Hard"))
         {
-            BOMB_COUNT=10;
+            BOMB_COUNT=25;
             GRID_SIZE=10;
             GRID_SPAN=10;
         }
 
         grid = findViewById(R.id.activity_main_grid);
         grid.setLayoutManager(new GridLayoutManager(this, GRID_SPAN));
+
+        // Set grid height dynamically based on grid size
+        int cellSize = 40; // dp
+        int gridHeightPx = (int) (GRID_SIZE * cellSize * getResources().getDisplayMetrics().density);
+        grid.getLayoutParams().height = gridHeightPx;
 
 
         setBestTime();
@@ -69,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
             public void onFinish() {
                 mineSweeperGame.outOfTime();
+                txtGameStatus.setText("⏰ Time's Up! Game Over!");
+                txtGameStatus.setTextColor(getResources().getColor(R.color.red));
 
                 Toast.makeText(getApplicationContext(), "Game Over: Timer Expired", Toast.LENGTH_SHORT).show();
                 mineSweeperGame.getMineGrid().revealAllBombs();
@@ -94,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
                 secondsElapsed = 0;
                 timer.setText(R.string.default_count);
                 flagsLeft.setText(String.format("%03d", mineSweeperGame.getNumberBombs() - mineSweeperGame.getFlagCount()));
+                txtGameStatus.setText("Ready to Play!");
+                txtGameStatus.setTextColor(getResources().getColor(R.color.green));
             }
         });
 
@@ -112,29 +122,30 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
     @Override
     public void cellClick(Cell cell) {
-
-        if(mineSweeperGame.isFlagMode())
-        {
-            mineSweeperGame.toggleMode();
-        }
-        handleCellClick(cell);
+        // Regular click should reveal cells
+        handleCellClick(cell, false);
     }
 
-
-
-    private void handleCellClick(Cell cell) {
-
-        mineSweeperGame.handleCellClick(cell);
-
-        flagsLeft.setText(String.format("%03d", mineSweeperGame.getNumberBombs() - mineSweeperGame.getFlagCount()));
-
+    private void handleCellClick(Cell cell, boolean isFlagAction) {
         if (!timerStarted) {
             countDownTimer.start();
             timerStarted = true;
+            txtGameStatus.setText("🎮 Game Started!");
+            txtGameStatus.setTextColor(getResources().getColor(R.color.yellow));
         }
+
+        if (isFlagAction) {
+            mineSweeperGame.flag(cell);
+        } else {
+            mineSweeperGame.handleCellClick(cell);
+        }
+
+        flagsLeft.setText(String.format("%03d", mineSweeperGame.getNumberBombs() - mineSweeperGame.getFlagCount()));
 
         if (mineSweeperGame.isGameOver()) {
             countDownTimer.cancel();
+            txtGameStatus.setText("💥 BOOM! Game Over!");
+            txtGameStatus.setTextColor(getResources().getColor(R.color.red));
             Toast.makeText(getApplicationContext(), "Game Over", Toast.LENGTH_SHORT).show();
             mineSweeperGame.getMineGrid().revealAllBombs();
         }
@@ -143,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
             countDownTimer.cancel();
             saveBestTime();
             setBestTime();
+            txtGameStatus.setText("🎉 Congratulations! You Won!");
+            txtGameStatus.setTextColor(getResources().getColor(R.color.green));
             Toast.makeText(getApplicationContext(), "Game Won", Toast.LENGTH_SHORT).show();
             mineSweeperGame.getMineGrid().revealAllBombs();
         }
@@ -151,15 +164,10 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
     }
 
     private void saveBestTime() {
-
-
-        if(secondsElapsed>getBestTime() && getBestTime()!=-1)
-        {
-            return;
+        if(secondsElapsed < getBestTime() || getBestTime() == -1) {
+            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+            sharedPreferences.edit().putInt("BEST_TIME", secondsElapsed).apply();
         }
-        SharedPreferences sharedPreferences=getSharedPreferences(getPackageName(),MODE_PRIVATE);
-        sharedPreferences.edit().putInt("BEST_TIME",secondsElapsed).apply();
-
     }
     private int getBestTime() {
 
@@ -169,14 +177,8 @@ public class MainActivity extends AppCompatActivity implements OnCellClickListen
 
     @Override
     public void cellLongClick(Cell cell) {
-
-
-        if(!mineSweeperGame.isFlagMode())
-        {
-            mineSweeperGame.toggleMode();
-        }
-
-        handleCellClick(cell);
+        // Long click should flag/unflag cells
+        handleCellClick(cell, true);
     }
 
     @Override

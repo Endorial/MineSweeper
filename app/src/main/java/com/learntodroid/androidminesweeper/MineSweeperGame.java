@@ -86,18 +86,13 @@ public class MineSweeperGame {
     }
 
     public boolean isGameWon() {
-        int numbersUnrevealed = 0;
         for (Cell c: getMineGrid().getCells()) {
-            if (c.getValue() != Cell.BOMB && c.getValue() != Cell.BLANK && !c.isRevealed()) {
-                numbersUnrevealed++;
+            // If any non-bomb cell is not revealed, game is not won
+            if (c.getValue() != Cell.BOMB && !c.isRevealed()) {
+                return false;
             }
         }
-
-        if (numbersUnrevealed == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     public void toggleMode() {

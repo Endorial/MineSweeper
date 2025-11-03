@@ -34,18 +34,17 @@ public class MenuActivity extends AppCompatActivity {
         View.OnClickListener onClickListener=new View.OnClickListener() {
             @Override
             public void onClick(View v){
-
                 dialog.dismiss();
-                String Difficulty_Level="Easy";
-                if(v==cardEasy)
-                    Difficulty_Level="Easy";
-                if(v==cardMedium)
-                    Difficulty_Level="Medium";
-                if(v==cardHard)
-                    Difficulty_Level="Hard";
+                String difficultyLevel = "Easy"; // default
+                if(v == cardEasy) {
+                    difficultyLevel = "Easy";
+                } else if(v == cardMedium) {
+                    difficultyLevel = "Medium";
+                } else if(v == cardHard) {
+                    difficultyLevel = "Hard";
+                }
 
-                startActivity(new Intent(MenuActivity.this,MainActivity.class).putExtra("Level",Difficulty_Level));
-
+                startActivity(new Intent(MenuActivity.this, MainActivity.class).putExtra("Level", difficultyLevel));
             }
         };
 

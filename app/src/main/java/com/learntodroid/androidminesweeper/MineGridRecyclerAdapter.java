@@ -53,8 +53,6 @@ public class MineGridRecyclerAdapter extends RecyclerView.Adapter<MineGridRecycl
         }
 
         public void bind(final Cell cell) {
-            itemView.setBackgroundColor(Color.GRAY);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view)
@@ -72,11 +70,12 @@ public class MineGridRecyclerAdapter extends RecyclerView.Adapter<MineGridRecycl
 
 
             if (cell.isRevealed()) {
+                itemView.setBackgroundColor(Color.WHITE);
                 if (cell.getValue() == Cell.BOMB) {
                     valueTextView.setText(R.string.bomb);
+                    valueTextView.setTextColor(Color.BLACK);
                 } else if (cell.getValue() == Cell.BLANK) {
                     valueTextView.setText("");
-                    itemView.setBackgroundColor(Color.WHITE);
                 } else {
                     valueTextView.setText(String.valueOf(cell.getValue()));
                     if (cell.getValue() == 1) {
@@ -85,10 +84,24 @@ public class MineGridRecyclerAdapter extends RecyclerView.Adapter<MineGridRecycl
                         valueTextView.setTextColor(Color.GREEN);
                     } else if (cell.getValue() == 3) {
                         valueTextView.setTextColor(Color.RED);
+                    } else if (cell.getValue() == 4) {
+                        valueTextView.setTextColor(Color.rgb(128, 0, 128)); // Purple
+                    } else if (cell.getValue() == 5) {
+                        valueTextView.setTextColor(Color.rgb(165, 42, 42)); // Brown
+                    } else if (cell.getValue() == 6) {
+                        valueTextView.setTextColor(Color.rgb(0, 206, 209)); // Turquoise
+                    } else if (cell.getValue() == 7) {
+                        valueTextView.setTextColor(Color.BLACK);
+                    } else if (cell.getValue() == 8) {
+                        valueTextView.setTextColor(Color.GRAY);
                     }
                 }
             } else if (cell.isFlagged()) {
                 valueTextView.setText(R.string.flag);
+                valueTextView.setTextColor(Color.RED);
+            } else {
+                // Unrevealed, unflagged cell
+                valueTextView.setText("");
             }
         }
     }

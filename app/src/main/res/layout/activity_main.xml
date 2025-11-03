@@ -47,7 +47,18 @@
                 android:fontFamily="@font/digital_7"
                 android:textColor="@color/green"
                 android:text="Best Time "
-                android:textSize="40dp" />
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/txtGameStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/green"
+                android:text="Ready to Play!"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -90,16 +101,16 @@
                     android:textSize="40dp" />
 
 
-                <TextView
+                <Button
                     android:id="@+id/activity_main_smiley"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/digital_7"
-                    android:gravity="center"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_marginEnd="20dp"
-                    android:text="@string/smiley"
-                    android:textColor="@color/yellow"
-                    android:textSize="40dp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_play"
+                    android:scaleType="fitCenter"
+                    android:padding="8dp" />
 
                 <ImageView
                     android:layout_width="40dp"
@@ -133,15 +144,11 @@
         android:layout_marginEnd="10dp"
         >
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:id="@+id/activity_main_grid"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_margin="5dp" />
     </androidx.cardview.widget.CardView>
 
 
